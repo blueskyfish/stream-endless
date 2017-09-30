@@ -26,7 +26,7 @@ const _cache = {};
 fsWatcher
   .on('add', (pathname, stats) => {
     const reader = new EndlessStreamReader(pathname, stats);
-		reader.pipe(writer);
+    reader.pipe(writer);
 
     _cache[pathname] = reader;
   })
