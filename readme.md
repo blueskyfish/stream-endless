@@ -1,4 +1,6 @@
 
+[![Stream Endless](logo.png)](#user-content-logo)
+
 # Stream Endless
 
 > A small demo how to read a text file endless
@@ -13,7 +15,7 @@ The FSWatcher collects the file for watching. If the event **add** is received i
 const FSWatcher = require('chokidar').FSWatcher;
 
 const fsWatcher = new FSWatcher({
-	alwaysStat: true
+  alwaysStat: true
 });
 
 const writer = new ConsoleStreamWriter();
@@ -22,18 +24,18 @@ const writer = new ConsoleStreamWriter();
 const _cache = {};
 
 fsWatcher
-	.on('add', (pathname, stats) => {
-		const reader = new EndlessStreamReader(pathname, stats);
+  .on('add', (pathname, stats) => {
+    const reader = new EndlessStreamReader(pathname, stats);
 		reader.pipe(writer);
 
-		_cache[pathname] = reader;
-	})
-	.on('change', (pathname, stats) => {
-		const reader = _cache[pathname];
-		if (reader) {
-			reader.onChanged(stats);
-		}
-	});
+    _cache[pathname] = reader;
+  })
+  .on('change', (pathname, stats) => {
+    const reader = _cache[pathname];
+    if (reader) {
+      reader.onChanged(stats);
+    }
+  });
 
 // add the file for watching
 fsWatcher.add('./test.log');
@@ -62,3 +64,7 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTIO
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
+
+## Logo
+
+Icon Experience: <https://www.iconexperience.com/>
