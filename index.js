@@ -10,6 +10,8 @@ const fs = require('fs');
 const { Readable, Writable } = require('stream');
 const path = require('path');
 
+const { FSWatcher } = require('chokidar');
+
 /**
  * @name LineData
  * @property {string} name the basename of the path
@@ -67,7 +69,7 @@ class EndlessStreamReader extends Readable {
 	 * @param {fs.Stats} stats the file stats
 	 */
   onChanged(stats) {
-    if (stats && stats.size != this.stats.size) {
+    if (stats && stats.size !== this.stats.size) {
 
       // get the file descriptor
       this._getFileDescriptor()
@@ -88,7 +90,7 @@ class EndlessStreamReader extends Readable {
     if (!fd) {
       return this.push(null);
     }
-    const position = (this.position <= stats.size) ? this.position : 0
+    const position = (this.position <= stats.size) ? this.position : 0;
     const size = stats.size - position;
     const buffer = Buffer.alloc(size, 0, 'utf8');
 
@@ -109,7 +111,7 @@ class EndlessStreamReader extends Readable {
           name: path.basename(this.pathname),
           line: ++this.lineNumber,
           text: parts[i]
-        }
+        };
         this.push(data);
       }
     });
@@ -151,8 +153,6 @@ class EndlessStreamReader extends Readable {
   }
 }
 
-
-const FSWatcher = require('chokidar').FSWatcher;
 
 const fsWatcher = new FSWatcher({
   alwaysStat: true
