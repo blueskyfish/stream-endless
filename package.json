@@ -9,10 +9,17 @@
   },
   "author": {
     "name": "BlueSkyFish",
-    "email": "blueskyfish@kirchnerei.de"
+    "email": "blueskyfish@blueskyfish.de"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "rimraf ./lib && tsc"
+  },
   "dependencies": {
     "chokidar": "^3.4.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^3.9.3"
   }
 }
