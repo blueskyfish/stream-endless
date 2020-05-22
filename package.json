@@ -1,6 +1,6 @@
 {
   "name": "stream-readendless",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A small demo how to read a text file endless",
   "license": "MIT",
   "repository": {

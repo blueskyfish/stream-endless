@@ -16,9 +16,13 @@ export class WatcherWorker {
     this.watcher = new FSWatcher(watchOptions);
 
     this.watcher
-      .on('add', (filename: string, stats: Stats) => this.onWatcherAdd(filename, stats))
-      .on('change', (filename: string, stats: Stats) => this.onWatcherChange(filename, stats))
-      .on('unlink', (filename: string) => this.onWatchRemove(filename));
+      .on('add', async (filename: string, stats: Stats) =>
+        await this.onWatcherInit(filename, stats)
+      )
+      .on('change', async (filename: string, stats: Stats) =>
+        await this.onWatcherChange(filename, stats)
+      )
+      .on('unlink', async (filename: string) => await this.onWatchRemove(filename));
   }
 
   startWatch(watcher: WatcherObservable): void {
@@ -27,25 +31,40 @@ export class WatcherWorker {
   }
 
   closeWatch(watcher: WatcherObservable): void {
-
-  }
-
-  close(): void {
-
-    for (const watcher of this.mapper.values()) {
-      watcher.close();
+    if (this.mapper.has(watcher.filename)) {
+      this.mapper.delete(watcher.filename);
     }
   }
 
-  private onWatcherAdd(filename: string, stats: Stats): void {
-
+  async close(): Promise<void> {
+    for (const watcher of this.mapper.values()) {
+      watcher.close();
+    }
+     await this.watcher.close();
   }
 
-  private onWatcherChange(filename: string, stats: Stats): void {
-
+  private async onWatcherInit(filename: string, stats: Stats): Promise<void> {
+    const watcher = this.getWatcher(filename);
+    if (watcher) {
+      await watcher.onInit(stats);
+    }
   }
 
-  private onWatchRemove(filename: string): void {
+  private async onWatcherChange(filename: string, stats: Stats): Promise<void> {
+    const watcher = this.getWatcher(filename);
+    if (watcher) {
+      await watcher.onChange(stats);
+    }
+  }
 
+  private async onWatchRemove(filename: string): Promise<void> {
+    const watcher = this.getWatcher(filename);
+    if (watcher) {
+      await watcher.onRemove();
+    }
+  }
+
+  private getWatcher(filename: string): WatcherObservable | null {
+    return this.mapper.get(filename) || null
   }
 }

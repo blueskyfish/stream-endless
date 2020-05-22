@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { DEFAULT_OPTIONS, IWatcherOptions } from './watcher.options';
 import { WatcherWorker } from './watcher.worker';
 import { WatcherObservable } from './watcher.observable';
 
@@ -13,14 +14,14 @@ export class WatcherService {
   /**
    * Add an file for watch the change
    * @param {string} filename
+   * @param {IWatcherOptions} options
    * @returns {Observable<string>}
    */
-  add(filename: string): WatcherObservable {
-    return new WatcherObservable(filename, this.watcher);
+  add(filename: string, options: IWatcherOptions = DEFAULT_OPTIONS): WatcherObservable {
+    return new WatcherObservable(filename, options, this.watcher);
   }
 
-  startWatch(filename: string) {
+  async close(): Promise<void> {
+    await this.watcher.close();
   }
-
-
 }
