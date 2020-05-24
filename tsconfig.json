@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": true,
+    "alwaysStrict": true,
+    "baseUrl": "./",
+    "declarationDir": "types",
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "DOM",
+      "ES2015"
+    ],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "removeComments": true,
+    "newLine": "lf",
+    "outDir": "./lib",
+    "target": "ES2017",
+    "incremental": true,
+    "sourceMap": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
