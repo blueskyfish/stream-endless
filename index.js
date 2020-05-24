@@ -15,8 +15,8 @@ const { FSWatcher } = require('chokidar');
 /**
  * @name LineData
  * @property {string} name the basename of the path
- * @property {number} line the line number
- * @property {string} text the line text.
+ * @property {number} index the index number
+ * @property {string} text the index text.
  */
 
 
