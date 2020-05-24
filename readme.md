@@ -1,45 +1,40 @@
 
-[![Stream Endless](logo.png)](#user-content-logo)
+[![Endless Core](logo.png)](#logo)
 
-# Stream Endless
+# Endless Core
 
-> A small demo how to read a text file endless
+> Watch file changes and delivery the file content like tail
 
-This is a Demo to read a text file. It use the nodejs module [Chokidar from Paul Miller](https://github.com/paulmillr/chokidar)
+## Overview
 
-## How it work
+![Components](assets/components.png)
 
-The FSWatcher collects the file for watching. If the event **add** is received it create a `EndlessStreamReader` that pipe to an `ConsoleStreamWriter`.
+The **WatcherService** is the front to monitor file changes.
 
-```js
-const FSWatcher = require('chokidar').FSWatcher;
-
-const fsWatcher = new FSWatcher({
-  alwaysStat: true
-});
-
-const writer = new ConsoleStreamWriter();
-
-// map with the all file for watching
-const _cache = {};
-
-fsWatcher
-  .on('add', (pathname, stats) => {
-    const reader = new EndlessStreamReader(pathname, stats);
-    reader.pipe(writer);
-
-    _cache[pathname] = reader;
-  })
-  .on('change', (pathname, stats) => {
-    const reader = _cache[pathname];
-    if (reader) {
-      reader.onChanged(stats);
-    }
-  });
-
-// add the file for watching
-fsWatcher.add('./test.log');
+```ts
+const watcherService: WatcherService = ...
+const filename = ...
+const watcher$ = watcherService.add(filename, { encoding: 'utf8', fromPosition: 1024});
 ```
+
+With "add" a **WatcherObservable** is created, which reads the file as UTF-8 and starts at the position 1024 bytes from the end.
+
+```ts
+let lineNo = 0;
+// start watching and split line be line.
+watcher$.start()
+    .pipe(
+        line(),
+    )
+    .subscribe((line: string) => {
+        console.log('%s: %s', ++lineNo, line);
+    });
+
+// close observer and stop watching
+watcher$.close();
+```
+
+The **watcherWorker** manages the file and notify the changes to the observable
 
 
 ## License

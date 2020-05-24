@@ -3,6 +3,9 @@ import { DEFAULT_OPTIONS, IWatcherOptions } from './watcher.options';
 import { WatcherWorker } from './watcher.worker';
 import { WatcherObservable } from './watcher.observable';
 
+/**
+ * The front to monitor file changes.
+ */
 export class WatcherService {
 
   private readonly watcher: WatcherWorker;

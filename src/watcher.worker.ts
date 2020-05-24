@@ -2,6 +2,11 @@ import { FSWatcher, WatchOptions } from 'chokidar';
 import { Stats } from "fs";
 import { WatcherObservable } from './watcher.observable';
 
+/**
+ * The Worker is the interface for monitoring file changes.
+ *
+ * It is use the module [**chokidar**](https://github.com/paulmillr/chokidar)
+ */
 export class WatcherWorker {
 
   private readonly mapper: Map<string, WatcherObservable> = new Map<string, WatcherObservable>();
