@@ -21,7 +21,7 @@ With "add" a **WatcherObservable** is created, which reads the file as UTF-8 and
 
 ```ts
 let lineNo = 0;
-// start watching and split line be line.
+// start watching and split index be index.
 watcher$.start()
     .pipe(
         line(),

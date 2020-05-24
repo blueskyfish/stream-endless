@@ -8,3 +8,6 @@ npm-debug.log
 test.log
 
 tsconfig.tsbuildinfo
+
+dist/
+tmp/

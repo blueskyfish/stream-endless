@@ -10,7 +10,7 @@ export declare class FileHandle {
     constructor(filename: string, options: IWatcherOptions);
     initFile(stats: Stats): Promise<string>;
     changeFile(stats: Stats): Promise<string>;
+    closeFile(): Promise<void>;
     private readFile;
     private openFile;
-    closeFile(): Promise<void>;
 }
