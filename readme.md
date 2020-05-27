@@ -12,29 +12,27 @@
 The **WatcherService** is the front to monitor file changes.
 
 ```ts
-const watcherService: WatcherService = ...
-const filename = ...
-const watcher$ = watcherService.add(filename, { encoding: 'utf8', fromPosition: 1024});
+/*     */ import { IWatcherLiner, splitLines, WatcherService, WatcherObservable } from 'endless-core';
+/*     */
+/*     */ const watcherService: WatcherService = ...
+/*     */ const filename = ...
+/* (1) */ const watcher$: WatcherObservable = watcherService.add(filename, { encoding: 'utf8', fromPosition: 1024});
+/*     */
+/* (2) */ watcher$.start()
+/*     */  .pipe(
+/*     */    splitLines(),
+/*     */  )
+/*     */  .subscribe((line: IWatcherLiner) => {
+/*     */    console.log('%s: %s', line.index, line.text);
+/*     */   });
+/*     */
+/*     */
+/* (3) */ watcher$.close();
 ```
-
-With "add" a **WatcherObservable** is created, which reads the file as UTF-8 and starts at the position 1024 bytes from the end.
-
-```ts
-let lineNo = 0;
-// start watching and split index be index.
-watcher$.start()
-    .pipe(
-        line(),
-    )
-    .subscribe((line: string) => {
-        console.log('%s: %s', ++lineNo, line);
-    });
-
-// close observer and stop watching
-watcher$.close();
-```
-
-The **watcherWorker** manages the file and notify the changes to the observable
+* (1) With "add" a **WatcherObservable** is created, which reads the file as UTF-8 and starts at the position 1024 bytes from the end.<br>
+    The **watcherWorker** manages the file and notify the changes to the observable
+* (2) Start watching and split the output into line.
+* (3) Close observer and stop watching
 
 
 ## License
